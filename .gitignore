@@ -1,3 +1,5 @@
 .DS_Store
 /beta_arrays
 /data
+
+/__pycache__
