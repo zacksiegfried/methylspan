@@ -126,7 +126,5 @@ def downloadMethylData(primary_site, file_type="Methylation Beta Value"):
             output_file.write(response.content)
 
 
-    
-
-### downloading all methylation beta arrays for pancreas
-#downloadMethylData('pancreas')
+if __name__ == "__main__":
+    downloadMethylData(input("Enter primary site name (eg. pancreas): "))
