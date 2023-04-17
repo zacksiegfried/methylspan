@@ -66,6 +66,9 @@ def methylDataFormat(all_files, sample_size = None):
     sample_df = sample_df.dropna(axis=1, thresh=5)
     sample_df = sample_df.astype(float)
 
+    shape = sample_df.shape
+    print('Final number of cases in methylation dataset :', shape[0])
+
     return(sample_df)
 
 
@@ -121,7 +124,7 @@ def metaDataFormat(df, all_files):
 
     # prints final number of sets that pass missing data conditions
     shape = meta_df.shape
-    print('Final number of cases in sample dataset :', shape[0])
+    print('Final number of cases in metadata dataset :', shape[0])
 
     return(meta_df)
 
