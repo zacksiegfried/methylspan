@@ -1,6 +1,7 @@
 .DS_Store
 /beta_arrays
 /data
+/mapping_files
 
 /__pycache__
 /.ipynb_checkpoints
