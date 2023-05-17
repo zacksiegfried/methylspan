@@ -39,7 +39,7 @@ def methylDataFormat(all_files, sample_size = None):
             sub_folder = d
 
 
-    # makes list of dataframes that match the file_names in sample_set (sluggish)
+    # makes list of dataframes that match the file_names in sample_set (SLOW)
     sample_df_list = []
     # iterates over list of metadata dictonaires that have been randomly selected (=sample_no = 100)
     for entry in sample_set:
@@ -127,4 +127,3 @@ def metaDataFormat(df, all_files):
     print('Final number of cases in metadata dataset :', shape[0])
 
     return(meta_df)
-
