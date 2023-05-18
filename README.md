@@ -2,7 +2,7 @@
 
 ## Survival analysis on cancer patients using methylation data
 
-### methylation data management
+### Methylation data management
 
 MethylDataFetch.py and MSM.py must be placed in the same directory. Upon downloading methylation data the newly made beta_arrays directory must be kept in the same directory as these two scripts.
 
@@ -12,6 +12,10 @@ Run the script and input primary site name to download all methylation beta arra
 **_Script will display download size and ask if you wish to proceed before downloading_**
 
 MSM.py contains functions to import and format methylation beta arrays and meta data into pandas data frames. These are mainly used in the modeling notebooks to import data.
+
+### Mapping Ilumina CpG IDs to genomic positions
+
+MethylMapping.py contains functions for mapping CpG ids to genes.
 
 
 ### modeling 
