@@ -2,12 +2,14 @@ import requests
 import json
 import re
 import os
+import pandas as pd
 
-"""Contains functions related to pulling metadata and downloading methylation beta arrays"""
+"""Contains functions related to pulling metadata and downloading methylation beta arrays, running file runs download function"""
 
 
 def getMethylMetaData(primary_site, file_type="Methylation Beta Value"):
     """Returns list of dictonaries of specfic meta data fields corresponding to input priamry site"""
+
     # filters to return on files with methylation data from chosen primary site
     filters = {
         "op": "and",
@@ -77,6 +79,7 @@ def getMethylMetaData(primary_site, file_type="Methylation Beta Value"):
 
 def checkDownloadSize(primary_site, file_type="Methylation Beta Value"):
     """Prints size of all methylation files in filtered search"""
+
     size = 0
     counter = 0 
     for file in getMethylMetaData(str(primary_site), str(file_type)):
@@ -88,10 +91,9 @@ def checkDownloadSize(primary_site, file_type="Methylation Beta Value"):
     print(str((size/1000000000)) + " gigabytes")
 
 
-def downloadMethylData(primary_site, file_type="Methylation Beta Value"):
+def downloadMethylFiles(primary_site, file_type="Methylation Beta Value"):
     """Downloads methylation files of requested type and primary site into folder beta_arrays"""
 
-    ### needs testing
     script_dir = os.path.dirname(os.path.abspath(__file__))
     try:
         os.mkdir(script_dir + "/beta_arrays")
@@ -126,5 +128,59 @@ def downloadMethylData(primary_site, file_type="Methylation Beta Value"):
             output_file.write(response.content)
 
 
+def getMethylBetaArrays(primary_site):
+    """Returns dataframe with cpg index as index column and each file_id as a column with beta values, 
+    method to avoid downloading files onto PC, still takes as long"""
+
+    # Creates directory for temporary file storage
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    try:
+        os.mkdir(script_dir + "/data")
+    except OSError as error:
+        print(error)
+
+    # Get all releavent files and compile into uuid_list
+    uuid_list = []
+    for file in getMethylMetaData(str(primary_site)):
+        uuid_list.append(file['id'])
+
+    df = pd.DataFrame()
+
+    # For each file UUID
+    for file_uuid in uuid_list:
+
+        # API call
+        response = requests.post("https://api.gdc.cancer.gov/data",
+                        data = json.dumps({"ids": str(file_uuid)}),
+                        headers={
+                            "Content-Type": "application/json"
+                            })
+        
+        # File meta data retrieval
+        response_head_cd = response.headers["Content-Disposition"]
+        file_name = re.findall("filename=(.+)", response_head_cd)[0]
+        save_name = script_dir + "/data/" + file_name
+
+        # downloading file
+        with open(save_name, "wb") as output_file:
+            output_file.write(response.content)
+
+        # reading in file
+        read_file = pd.read_table(save_name, header = None)
+        read_file.rename(columns = {0:'cpg',1:str(file_uuid)}, inplace = True)
+        
+        # merging read file into main df
+        if df.empty != True:
+            df = df.merge(read_file, on='cpg')
+        else:
+            df = read_file
+
+        # deleting downloaded file
+        os.remove(save_name)
+
+    df.set_index('cpg')
+    return(df)
+
+
 if __name__ == "__main__":
-    downloadMethylData(input("Enter primary site name (eg. pancreas): "))
+    downloadMethylFiles(input("Enter primary site name (eg. pancreas): "))
