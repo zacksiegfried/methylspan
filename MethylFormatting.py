@@ -20,11 +20,11 @@ def pullMethylMetaData(primary_site):
     print("Number of methylation files for all cases for primary site " + str(primary_site) + ": " + str(len(full_file_info)))
     return(full_file_info)
 
-# Used for finding the 'beta_arrays' folder where methylation arrays are stored 
-script_dir = os.path.dirname(os.path.abspath(__file__))
 
 def methylDataFormat(all_files, sample_size = None):
     """Returns methylation array as a df. Index column is file_is, column headers are CpG site #"""
+
+    script_dir = os.path.dirname(os.path.abspath(__file__))
 
     # Uses all the data by default, allows reduction of cases to speed up output
     if sample_size == None:
