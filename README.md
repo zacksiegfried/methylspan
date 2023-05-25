@@ -2,11 +2,11 @@
 
 ## NCI GDC Data Portal Tools
 
-### Accessing methylation data
+### Accessing methylation data (No permanent download method)
 
 A complete methylation beta array containing CpG information for all patients of a specified cancer primary site can be created using the MethylDataFetch.getMethylBetaArrays function
 
-The following will return a pandas dataframe for all patients with Thymus as primary cancer site. The first column 'cpg' contains Ilumina CpG index followed by columns named after patient 'file_uuid' containing methylation beta values 
+The following will return a pandas dataframe for all patients with Thymus as primary cancer site. The first column 'cpg' contains Ilumina CpG index followed by columns named the unique patient 'file_uuid' containing methylation beta values 
 
 ```
 import sys
@@ -17,9 +17,11 @@ from MethylDataFetch import getMethylBetaArrays
 frame = getMethylBetaArrays('thymus')
 ```
 
+A new directory 'data' is created where NCI GDC data files are downloaded, read into python, and then deleted
+
 ## Survival analysis on cancer patients using methylation data
 
-### Methylation data management
+### Methylation data management (Permanent download method)
 
 MethylDataFetch.py and MSM.py must be placed in the same directory. Upon downloading methylation data the newly made beta_arrays directory must be kept in the same directory as these two scripts.
 
