@@ -21,7 +21,7 @@ def pullMethylMetaData(primary_site):
 
 
 def methylDataFormat(all_files, sample_size = None):
-    """Returns methylation array as a df. Index column is file_is, column headers are CpG site #"""
+    """Returns methylation array as a df. Index column is file_id, column headers are CpG site #"""
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
