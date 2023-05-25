@@ -2,7 +2,6 @@ import MethylDataFetch
 import os
 import random
 import pandas as pd
-
 from functools import reduce
 
 """Contains functions related to formatting metadata and methylation beta arrays"""
