@@ -168,19 +168,18 @@ def getMethylBetaArrays(primary_site):
 
         # reading in file
         read_file = pd.read_table(save_name, header = None)
-        read_file.rename(columns = {0:'file_uuid',1:str(file_uuid)}, inplace = True)
+        read_file.rename(columns = {0:'cpg',1:str(file_uuid)}, inplace = True)
         
         # merging read file into main df
         if df.empty != True:
-            df = df.merge(read_file, on='file_uuid')
+            df = df.merge(read_file, on='cpg')
         else:
             df = read_file
 
         # deleting downloaded file
         os.remove(save_name)
 
-    df = df.set_index('file_uuid')
-    df = df.transpose()
+    df = df.set_index('cpg')
     
     return(df)
 
