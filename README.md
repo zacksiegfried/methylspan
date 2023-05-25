@@ -1,5 +1,22 @@
 # methylspan
 
+## NCI GDC Data Portal Tools
+
+### Accessing methylation data
+
+A complete methylation beta array containing CpG information for all patients of a specified cancer primary site can be created using the MethylDataFetch.getMethylBetaArrays function
+
+The following will return a pandas dataframe for all patients with Thymus as primary cancer site. The first column 'cpg' contains Ilumina CpG index followed by columns named after patient 'file_uuid' containing methylation beta values 
+
+```
+import sys
+sys.path.insert(0, '/Users/user_name/Documents/methylspan')
+
+from MethylDataFetch import getMethylBetaArrays
+
+frame = getMethylBetaArrays('thymus')
+```
+
 ## Survival analysis on cancer patients using methylation data
 
 ### Methylation data management
