@@ -5,7 +5,7 @@ from lifelines import CoxPHFitter
 import numpy as np
 
 
-def survivalPCAFormat(sample_data, meta_data, no_PCA):
+def survivalPCAFormat(sample_data, meta_data, n0_PCA):
     """Takes methylation beta array and performs PCA combines meta data from MSM package + formats"""
 
     # drops all CpG sites with at least 1 missing value
@@ -19,7 +19,7 @@ def survivalPCAFormat(sample_data, meta_data, no_PCA):
     print("Number of CpG sites with complete data from all cases: " + str(scaled_df.shape[1]))
 
     # converts CpG sites to PCA components
-    pca = PCA(n_components=no_PCA)      # setting number of PCAs to 15 (decided using PCA notebook's scree plot)
+    pca = PCA(n_components=n0_PCA)
     pca.fit(scaled_df)
 
     output = pca.transform(scaled_df)
