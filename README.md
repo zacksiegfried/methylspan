@@ -6,7 +6,7 @@
 
 A complete methylation beta array containing CpG information for all patients of a specified cancer primary site can be created using the MethylDataFetch.getMethylBetaArrays function
 
-The following will return a pandas dataframe for all patients with Thymus as primary cancer site. The first column 'cpg' contains Ilumina CpG index followed by columns named the unique patient 'file_uuid' containing methylation beta values 
+The following will return a pandas dataframe for all patients with Thymus as primary cancer site. The index column 'cpg' contains Ilumina CpG index followed by columns named the unique patient 'file_uuid' containing methylation beta values 
 
 ```
 import sys
