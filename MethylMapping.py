@@ -31,7 +31,6 @@ def averageGene(mapped_sample_data):
     """Averages mapped methylation beta array beta values for all similar genes (not scientific)"""
 
     df = mapped_sample_data.groupby(by=mapped_sample_data.columns, axis=1).mean()
-    print(df.head())
 
     return(df)
 
@@ -49,6 +48,5 @@ def fullGene(mapped_sample_data, gene):
             continue
         cols.append(column)
     df.columns = cols
-    print(df.head())
 
     return(df)
