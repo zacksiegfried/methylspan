@@ -18,7 +18,7 @@ data = getMethylBetaArrays('thymus')
 ```
 Returns a dictionary in the form ```{'data': df, 'primary_site': thymus}```
 
-The dataframe contains methylation information for all patients with Thymus as primary cancer site. Index column 'cpg' contains Ilumina CpG index followed by columns named the unique patient 'file_uuid' containing methylation beta values 
+The dataframe contains methylation information for all patients with Thymus as primary cancer site. Index column 'cpg' contains Ilumina CpG index. Columns are named the unique patient 'file_uuid' and contain methylation beta values
 
 ## Survival analysis on cancer patients using methylation data
 
