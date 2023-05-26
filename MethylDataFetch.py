@@ -130,7 +130,8 @@ def downloadMethylFiles(primary_site, file_type="Methylation Beta Value"):
 
 
 def getMethylBetaArrays(primary_site):
-    """Returns dataframe with cpg index as index column and each file_id as a column with beta values, 
+    """Returns dictionary object {'data': df, 'primary_site': primary site} 
+        dataframe with cpg index as index column and each file_id as a column with beta values, 
         method to avoid downloading files onto PC, still takes as long"""
 
     # Creates directory for temporary file storage
@@ -179,9 +180,11 @@ def getMethylBetaArrays(primary_site):
         # deleting downloaded file
         os.remove(save_name)
 
+    # setting index and attaching primary site type
     df = df.set_index('cpg')
+    frame_dict = {'data':df, 'primary_site':str(primary_site)}
     
-    return(df)
+    return(frame_dict)
 
 
 if __name__ == "__main__":
