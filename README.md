@@ -16,7 +16,7 @@ from MethylDataFetch import getMethylBetaArrays
 
 data = getMethylBetaArrays('thymus')
 ```
-Returns a dictionary in the form {'data': df, 'primary_site': thymus}
+Returns a dictionary in the form ```{'data': df, 'primary_site': thymus}```
 
 The dataframe contains methylation information for all patients with Thymus as primary cancer site. Index column 'cpg' contains Ilumina CpG index followed by columns named the unique patient 'file_uuid' containing methylation beta values 
 
