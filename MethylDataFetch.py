@@ -2,6 +2,8 @@ import requests
 import json
 import re
 import os
+import tarfile
+import shutil
 import pandas as pd
 from tqdm.auto import tqdm
 
@@ -143,33 +145,55 @@ def getMethylBetaArrays(primary_site):
 
     # Get all releavent files and compile into uuid_list
     uuid_list = []
-    for file in getMethylMetaData(str(primary_site)):
+    for file in getMethylMetaData(str(primary_site))[:10]:
         uuid_list.append(file['id'])
 
+    params = {"ids": uuid_list}
+
+    # API call
+    response = requests.post("https://api.gdc.cancer.gov/data",
+                                data = json.dumps(params),
+                                headers={
+                                    "Content-Type": "application/json"
+                                        })
+
+    # save zip with response 
+    response_head_cd = response.headers["Content-Disposition"]
+    file_name = re.findall("filename=(.+)", response_head_cd)[0]
+    save_name = str(script_dir + "/data/" + file_name)
+    with open(save_name, "wb") as output_file:
+        output_file.write(response.content)
+
+    # extracting zip
+    file = tarfile.open(save_name)
+    file.extractall(str(script_dir + "/data"))
+    file.close()
+
+    # removes the unneccessary files
+    os.remove(save_name)
+    os.remove(str(script_dir + "/data/MANIFEST.txt"))
+    try:
+        os.remove(str(script_dir + "/data/.DS_Store"))
+    except OSError as e:
+        print(e)
+
+    # getting saved files names
+    new_file_list = []
+    new_dir_list = []
+    for (root, dirs, files) in os.walk(str(script_dir + "/data")):
+        for d in dirs:
+            new_dir_list.append(d)
+        for f in files:
+            new_file_list.append(f)
+
+    # building methylation df
     df = pd.DataFrame()
 
-    # For each file UUID
-    for file_uuid in tqdm(uuid_list):
-
-        # API call
-        response = requests.post("https://api.gdc.cancer.gov/data",
-                        data = json.dumps({"ids": str(file_uuid)}),
-                        headers={
-                            "Content-Type": "application/json"
-                            })
-        
-        # File meta data retrieval
-        response_head_cd = response.headers["Content-Disposition"]
-        file_name = re.findall("filename=(.+)", response_head_cd)[0]
-        save_name = script_dir + "/data/" + file_name
-
-        # downloading file
-        with open(save_name, "wb") as output_file:
-            output_file.write(response.content)
+    for i, j in zip(new_dir_list, new_file_list):
 
         # reading in file
-        read_file = pd.read_table(save_name, header = None)
-        read_file.rename(columns = {0:'cpg',1:str(file_uuid)}, inplace = True)
+        read_file = pd.read_table(str(script_dir + "/data/" + i + "/" + j), header = None)
+        read_file.rename(columns = {0:'cpg',1:str(j.split('.')[0])}, inplace = True)
         
         # merging read file into main df
         if df.empty != True:
@@ -177,10 +201,9 @@ def getMethylBetaArrays(primary_site):
         else:
             df = read_file
 
-        # deleting downloaded file
-        os.remove(save_name)
+        # deleting sub directory and file
+        shutil.rmtree(str(script_dir + "/data/" + i))
 
-    # setting index and attaching primary site type
     df = df.set_index('cpg')
     frame_dict = {'data':df, 'primary_site':str(primary_site)}
     
