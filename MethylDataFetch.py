@@ -145,7 +145,7 @@ def getMethylBetaArrays(primary_site):
 
     # Get all releavent files and compile into uuid_list
     uuid_list = []
-    for file in getMethylMetaData(str(primary_site))[:10]:
+    for file in getMethylMetaData(str(primary_site))[:10]: ### Remove for actual function
         uuid_list.append(file['id'])
 
     params = {"ids": uuid_list}
@@ -175,7 +175,7 @@ def getMethylBetaArrays(primary_site):
     try:
         os.remove(str(script_dir + "/data/.DS_Store"))
     except OSError as e:
-        print(e)
+        pass
 
     # getting saved files names
     new_file_list = []
@@ -189,7 +189,7 @@ def getMethylBetaArrays(primary_site):
     # building methylation df
     df = pd.DataFrame()
 
-    for i, j in zip(new_dir_list, new_file_list):
+    for i, j in tqdm(zip(new_dir_list, new_file_list)):
 
         # reading in file
         read_file = pd.read_table(str(script_dir + "/data/" + i + "/" + j), header = None)
