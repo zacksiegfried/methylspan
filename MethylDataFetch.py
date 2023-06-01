@@ -145,7 +145,7 @@ def getMethylBetaArrays(primary_site):
 
     # Get all releavent files and compile into uuid_list
     uuid_list = []
-    for file in getMethylMetaData(str(primary_site))[:10]: ### Remove for actual function
+    for file in getMethylMetaData(str(primary_site)):
         uuid_list.append(file['id'])
 
     params = {"ids": uuid_list}
