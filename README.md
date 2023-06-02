@@ -18,7 +18,14 @@ data = getMethylBetaArrays('thymus')
 ```
 Returns a dictionary in the form ```{'data': df, 'primary_site': 'thymus'}```
 
-The dataframe contains methylation information for all patients with Thymus as primary cancer site. Index column 'cpg' contains Ilumina CpG index. Columns are named the unique patient 'file_uuid' and contain methylation beta values
+The dataframe contains methylation information for all patients with Thymus as primary cancer site. Rows contains Ilumina CpG index. Columns are named the unique patient 'file_uuid' and contain methylation beta values. Saves a csv file under methylspan/analysis/comp.csv with the same information. Conditional formatting can be used to quickly highlight any genes with significant differences in methylation content.
+
+### Methylation Analysis
+
+AnalysisFunctions.py contains complete analysis functions that are designed to go from input primary site(s) to interpretable output data.
+
+AnalysisFunctions.visualGeneMethylContent(primary_site_list)
+Takes a list object of primary site names and returns a dataframe with indivdual gene IDs as rows. Columns contain primary site name with mean methylation content data.
 
 ## Survival analysis on cancer patients using methylation data
 
