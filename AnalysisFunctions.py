@@ -1,19 +1,23 @@
-import pandas as pd
 import os
+import sys
+import pandas as pd
+
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, str(script_dir))
+
 from MethylDataFetch import getMethylBetaArrays
 from MethylMapping import methylMap450
 from MethylMapping import averageGene
 
 
-def compareGeneMethylContent(list_of_primary_sites):
-    '''Returns dataframe'''
-
-    script_dir = os.path.dirname(os.path.abspath(__file__))
+def visualGeneMethylContent(list_of_primary_sites):
+    '''Saves a csv files containing the mean methylation content of each gene for inputted primary site locations'''
 
     try:
         os.mkdir(script_dir + "/analysis")
-    except OSError as error:
-        print(error)
+    except OSError as e:
+        pass
 
     # populating list of dfs
     list_of_frames = []
@@ -49,7 +53,7 @@ def compareGeneMethylContent(list_of_primary_sites):
     df = df.set_index('index')
     df.index.name = None
 
-    df.to_csv(str(script_dir + '/analysis/comp.csv')) # overwrites itself (could fix)
+    df.to_csv(str(script_dir + '/analysis/comp.csv'), index_label='gene') # overwrites itself (could fix)
 
     return(df)
 
