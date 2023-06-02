@@ -140,12 +140,12 @@ def getMethylBetaArrays(primary_site):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     try:
         os.mkdir(script_dir + "/data")
-    except OSError as error:
-        print(error)
+    except OSError as e:
+        pass
 
     # Get all releavent files and compile into uuid_list
     uuid_list = []
-    for file in getMethylMetaData(str(primary_site)):
+    for file in getMethylMetaData(str(primary_site))[:10]:
         uuid_list.append(file['id'])
 
     params = {"ids": uuid_list}
@@ -186,10 +186,9 @@ def getMethylBetaArrays(primary_site):
         for f in files:
             new_file_list.append(f)
 
-    # building methylation df
+    # building methylation df (PROGRESS BAR)
     df = pd.DataFrame()
-
-    for i, j in tqdm(zip(new_dir_list, new_file_list)):
+    for i, j in tqdm(zip(new_dir_list, new_file_list), total=len(new_dir_list)):
 
         # reading in file
         read_file = pd.read_table(str(script_dir + "/data/" + i + "/" + j), header = None)
