@@ -18,21 +18,23 @@ data = getMethylBetaArrays('thymus')
 ```
 Returns a dictionary in the form ```{'data': df, 'primary_site': 'thymus'}```
 
-The dataframe contains methylation information for all patients with Thymus as primary cancer site. Index column 'cpg' contains Ilumina CpG index. Columns are named the unique patient 'file_uuid' and contain methylation beta values
+The dataframe contains methylation information for all patients with Thymus as primary cancer site. Rows contains Ilumina CpG index. Columns are named the unique patient 'file_uuid' and contain methylation beta values. Saves a csv file under methylspan/analysis/comp.csv with the same information. Conditional formatting can be used to quickly highlight any genes with significant differences in methylation content.
 
-## Survival analysis on cancer patients using methylation data
-
-### Methylation data management (Permanent download method)
-
-MethylDataFetch.py and MSM.py must be placed in the same directory. Upon downloading methylation data the newly made beta_arrays directory must be kept in the same directory as these two scripts.
+### Accessing methylation data (Permanent download method)
 
 MethylDataFetch.py contains functions related to downloading methylation data from NCI GDC data portal. 
-Run the script and input primary site name to download all methylation beta array files from cases with corresponding primary site.
+Run the script and input primary site name to download all methylation beta array files from cases with corresponding primary site into the methylspan/beta_arrays directory.
 
 **_Script will display download size and ask if you wish to proceed before downloading_**
 
-MSM.py contains functions to import and format methylation beta arrays and meta data into pandas data frames. These are mainly used in the modeling notebooks to import data.
+## Methylation Analysis
 
+AnalysisFunctions.py contains complete analysis functions that are designed to go from input primary site(s) to interpretable output data.
+
+AnalysisFunctions.visualGeneMethylContent(primary_site_list)
+Takes a list object of primary site names and returns a dataframe with indivdual gene IDs as rows. Columns contain primary site name with mean methylation content data.
+
+## Survival analysis on cancer patients using methylation data
 
 ### Mapping Ilumina CpG IDs to genomic positions
 
