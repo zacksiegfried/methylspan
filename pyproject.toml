@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "methylspan"
+version = "0.2.0"
+description = "Download GDC DNA methylation data and fit survival models on it"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Zack Siegfried" }]
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.1",
+    "pyarrow>=14",
+    "requests>=2.31",
+    "tqdm>=4.66",
+    "scikit-learn>=1.4",
+    "scikit-survival>=0.23",
+]
+
+[project.optional-dependencies]
+notebooks = ["jupyterlab", "matplotlib>=3.8"]
+dev = ["pytest>=8", "nbstripout>=0.7"]
+
+[project.scripts]
+methylspan = "methylspan.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["network: hits the live GDC API (deselect with -m 'not network')"]
